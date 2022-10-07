@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "taLigado",
+    "slug": "taLigado",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
