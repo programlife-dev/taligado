@@ -1,10 +1,19 @@
 {
   "expo": {
     "name": "taLigado",
-    "slug": "taLigado",
+    // "icon": "./path/to/your/app-icon.png",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "slug": "taLigado",
+    "ios": {
+      "bundleIdentifier": "com.programlife.taLigado",
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "package": "com.programlife.taLigado",
+      "versionCode": 1
+    }
   }
 }
