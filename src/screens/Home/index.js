@@ -10,7 +10,7 @@ import {
 import Feather from 'react-native-vector-icons/Feather';
 
 // create a component
-const MyComponent = () => {
+export default () => {
     return (
         <Container>
             
@@ -53,4 +53,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default MyComponent;
+

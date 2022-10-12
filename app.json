@@ -1,7 +1,6 @@
 {
   "expo": {
-    "name": "taLigado",
-    // "icon": "./path/to/your/app-icon.png",
+    "name": "taLigado",    
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"

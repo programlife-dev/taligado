@@ -1,13 +1,44 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet , TextInput} from 'react-native';
+import {
+    Container,
+    SearchArea   
+
+} from './styles';
+
+import Feather from 'react-native-vector-icons/Feather';
 
 // create a component
 export default () => {
     return (
-        <View style={styles.container}>
+        <Container>
+            
             <Text>Profile</Text>
-        </View>
+            
+
+
+            
+            {/* <View
+                style={{
+                    flexDirection: 'row',
+                    borderColor: '#C6C6C6',
+                    borderWidth: 1,
+                    borderRadius: 8,
+                    paddingHorizontal: 10,
+                    paddingVertical: 8,
+                }}>
+                <Feather
+                    name="search"
+                    size={20}
+                    color="#C6C6C6"
+                    style={{ marginRight: 5 }}
+                />
+                <TextInput placeholder="Search" />
+            </View> */}
+
+
+        </Container>
     );
 };
 
