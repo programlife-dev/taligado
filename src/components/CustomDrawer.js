@@ -1,4 +1,6 @@
 import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+
 import {
   View,
   Text,
@@ -15,6 +17,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import * as SplashScreen from 'expo-splash-screen';
+import Api from '../api/Api';
 
 import {
   useFonts,
@@ -32,7 +35,18 @@ import {
   Roboto_900Black_Italic,
 } from '@expo-google-fonts/roboto';
 
-const CustomDrawer = props => {
+const CustomDrawer = (props) => {
+
+// console.log(props.navigation.reset);
+  // const navigation = useNavigation();
+
+  const handleLogoutClick = async () => {
+    // console.log('Click');
+    await Api.logout();
+    props.navigation.reset({
+      routes: [{ name: 'SignIn' }]
+    });
+  }
 
   let [fontsLoaded] = useFonts({
     Roboto_100Thin,
@@ -49,7 +63,7 @@ const CustomDrawer = props => {
     Roboto_900Black_Italic,
   });
   if (!fontsLoaded) {
-    // return <AppLoading />;
+
   } else {
     SplashScreen.hideAsync();
 
@@ -58,6 +72,10 @@ const CustomDrawer = props => {
         <DrawerContentScrollView
           {...props}
           contentContainerStyle={{ backgroundColor: '#8200d6' }}>
+
+          {/* <View style={{ flex: 1, backgroundColor: '#8200d6', paddingTop: 10, height:100 }}>
+
+          </View> */}
           <ImageBackground
             source={require('../assets/images/menu-bg.jpeg')}
             style={{ padding: 20 }}>
@@ -69,10 +87,10 @@ const CustomDrawer = props => {
               style={{
                 color: '#fff',
                 fontSize: 18,
-                 fontFamily: 'Roboto_500Medium',
+                fontFamily: 'Roboto_500Medium',
                 marginBottom: 5,
               }}>
-              John Doe
+              Thiago Aurélio
             </Text>
             <View style={{ flexDirection: 'row' }}>
               <Text
@@ -81,8 +99,10 @@ const CustomDrawer = props => {
                   fontFamily: 'Roboto_400Regular',
                   marginRight: 5,
                 }}>
-                280 Coins
+                Master
               </Text>
+              <FontAwesome5 name="coins" size={14} color="#fff" />
+              <FontAwesome5 name="coins" size={14} color="#fff" />
               <FontAwesome5 name="coins" size={14} color="#fff" />
             </View>
           </ImageBackground>
@@ -104,7 +124,7 @@ const CustomDrawer = props => {
               </Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => { }} style={{ paddingVertical: 15 }}>
+          <TouchableOpacity onPress={handleLogoutClick} style={{ paddingVertical: 15 }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Ionicons name="exit-outline" size={22} />
               <Text
@@ -113,7 +133,7 @@ const CustomDrawer = props => {
                   fontFamily: 'Roboto_500Medium',
                   marginLeft: 5,
                 }}>
-                Sign Out
+                Logout
               </Text>
             </View>
           </TouchableOpacity>

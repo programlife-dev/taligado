@@ -8,6 +8,15 @@ import {
     ProfileNavigation
 } from './ScreenStack';
 
+import {
+    Preload,
+    SignIn,
+    SignUp,
+
+    Home,
+    Profile
+} from '../screens';
+
 const Tab = createBottomTabNavigator();
 
 export function HomeTabNavigation() {
@@ -22,7 +31,7 @@ export function HomeTabNavigation() {
         >
             <Tab.Screen
                 name='HomeTab'
-                component={HomeNavigation}
+                component={Home}
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <>

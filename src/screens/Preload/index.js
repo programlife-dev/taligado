@@ -16,11 +16,9 @@ export default () => {
 
             const token = await AsyncStorage.getItem('token');
 
-            if (token) {
-                navigation.navigate('SignIn');
-                // navigation.navigate('Home');
-
-                console.log('Token: ', token);
+            if (token) {                
+                navigation.navigate('Home');
+              
             } else {
                 navigation.reset({
                     routes: [{ name: 'SignIn' }]
@@ -37,7 +35,7 @@ export default () => {
                 height={300}
                 width={300}
                 style={{ transform: [{ rotate: '-5deg' }] }}
-            />           
+            />
             <LoadingIcon size="large" color="#FFFFFF" />
         </Container>
     );
