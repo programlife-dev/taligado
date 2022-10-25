@@ -1,6 +1,6 @@
 //import liraries
 import React, { useState, useContext, useEffect } from 'react';
-import { Keyboard, View, TouchableOpacity} from 'react-native';
+import { Keyboard, View, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { UserContext } from '../../contexts/UserContext';
@@ -51,7 +51,7 @@ export default () => {
     const handleSignClick = async () => {
         if (emailField != '' && passwordField != '') {
 
-            let json = await Api.signIn(emailField, passwordField);
+            let json = await Api.signIn(emailField, passwordField);         
 
             if (json.token) {
                 await AsyncStorage.setItem('token', json.token);
@@ -89,114 +89,114 @@ export default () => {
 
 
     return (
-       
-            <Container>
-                {!keyboardStatus ?
-                    <IconArea>
-                        <LoginSVG
-                            height={300}
-                            width={300}
-                            style={{ transform: [{ rotate: '-5deg' }] }}
-                        />
-                    </IconArea>
-                    : false}
 
-
-                <InputArea>
-                    <InputField
-                        label={'E-mail'}
-                        icon={
-                            <MaterialIcons
-                                name="alternate-email"
-                                size={20}
-                                color="#ccc"
-                                style={{ marginRight: 5 }}
-                            />
-                        }
-                        keyboardType="email-address"
-                        onChangeText={t => setEmailField(t)}
+        <Container>
+            {!keyboardStatus ?
+                <IconArea>
+                    <LoginSVG
+                        height={300}
+                        width={300}
+                        style={{ transform: [{ rotate: '-5deg' }] }}
                     />
-
-                    <InputField
-                        label={'Senha'}
-                        icon={
-                            <Ionicons
-                                name="ios-lock-closed-outline"
-                                size={20}
-                                color="#ccc"
-                                style={{ marginRight: 5 }}
-                            />
-                        }
-                        inputType="password"
-                        // fieldButtonLabel={"Esqueceu?"}
-                        onChangeText={t => setPasswordField(t)}
-                    />
-
-                    <CustomButton onPress={handleSignClick}>
-                        <CustomButtonText>Entrar</CustomButtonText>
-                    </CustomButton>
-
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            marginTop: 30,
-                            marginBottom: 30,
-                        }}>
-                        <TouchableOpacity
-                            onPress={() => { }}
-                            style={{
-                                borderColor: '#ddd',
-                                borderWidth: 2,
-                                borderRadius: 10,
-                                paddingHorizontal: 30,
-                                paddingVertical: 10,
-                            }}>
-                            <GoogleSVG height={24} width={24} />
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => { }}
-                            style={{
-                                borderColor: '#ddd',
-                                borderWidth: 2,
-                                borderRadius: 10,
-                                paddingHorizontal: 30,
-                                paddingVertical: 10,
-                            }}>
-                            <FacebookSVG height={24} width={24} />
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => { }}
-                            style={{
-                                borderColor: '#ddd',
-                                borderWidth: 2,
-                                borderRadius: 10,
-                                paddingHorizontal: 30,
-                                paddingVertical: 10,
-                            }}>
-                            <TwitterSVG height={24} width={24} />
-                        </TouchableOpacity>
-                    </View>
+                </IconArea>
+                : false}
 
 
-                    <SignMessageButton onPress={handleSignUpClick}>
-                        <SignMessageButtonText>Ainda não possui uma conta?</SignMessageButtonText>
-                        <SignMessageButtonTextBold>Cadastre-se</SignMessageButtonTextBold>
-                    </SignMessageButton>
-                </InputArea>
-
-                <SignSkipButton onPress={handleMessageButtonClick}>
-                    <SignSkipButtonText>Pular
-                        <Ionicons
-                            name="arrow-redo-sharp"
+            <InputArea>
+                <InputField
+                    label={'E-mail'}
+                    icon={
+                        <MaterialIcons
+                            name="alternate-email"
                             size={20}
                             color="#ccc"
                             style={{ marginRight: 5 }}
                         />
-                    </SignSkipButtonText>
-                </SignSkipButton>
-            </Container>
-   
+                    }
+                    keyboardType="email-address"
+                    onChangeText={t => setEmailField(t)}
+                />
+
+                <InputField
+                    label={'Senha'}
+                    icon={
+                        <Ionicons
+                            name="ios-lock-closed-outline"
+                            size={20}
+                            color="#ccc"
+                            style={{ marginRight: 5 }}
+                        />
+                    }
+                    inputType="password"
+                    // fieldButtonLabel={"Esqueceu?"}
+                    onChangeText={t => setPasswordField(t)}
+                />
+
+                <CustomButton onPress={handleSignClick}>
+                    <CustomButtonText>Entrar</CustomButtonText>
+                </CustomButton>
+
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        marginTop: 30,
+                        marginBottom: 30,
+                    }}>
+                    <TouchableOpacity
+                        onPress={() => { }}
+                        style={{
+                            borderColor: '#ddd',
+                            borderWidth: 2,
+                            borderRadius: 10,
+                            paddingHorizontal: 30,
+                            paddingVertical: 10,
+                        }}>
+                        <GoogleSVG height={24} width={24} />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => { }}
+                        style={{
+                            borderColor: '#ddd',
+                            borderWidth: 2,
+                            borderRadius: 10,
+                            paddingHorizontal: 30,
+                            paddingVertical: 10,
+                        }}>
+                        <FacebookSVG height={24} width={24} />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => { }}
+                        style={{
+                            borderColor: '#ddd',
+                            borderWidth: 2,
+                            borderRadius: 10,
+                            paddingHorizontal: 30,
+                            paddingVertical: 10,
+                        }}>
+                        <TwitterSVG height={24} width={24} />
+                    </TouchableOpacity>
+                </View>
+
+
+                <SignMessageButton onPress={handleSignUpClick}>
+                    <SignMessageButtonText>Ainda não possui uma conta?</SignMessageButtonText>
+                    <SignMessageButtonTextBold>Cadastre-se</SignMessageButtonTextBold>
+                </SignMessageButton>
+            </InputArea>
+
+            <SignSkipButton onPress={handleMessageButtonClick}>
+                <SignSkipButtonText>Pular
+                    <Ionicons
+                        name="arrow-redo-sharp"
+                        size={20}
+                        color="#ccc"
+                        style={{ marginRight: 5 }}
+                    />
+                </SignSkipButtonText>
+            </SignSkipButton>
+        </Container>
+
     );
 };
 

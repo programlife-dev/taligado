@@ -1,6 +1,7 @@
 //import liraries
 import React, { useState, useEffect } from 'react';
-import { Dimensions, View, Text, StyleSheet, TextInput, Image, FlatList } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Dimensions, View, Text, StyleSheet, TextInput, Image, FlatList, Alert } from 'react-native';
 import { ListItem, SearchBar } from 'react-native-elements';
 import { WebView } from 'react-native-webview';
 
@@ -24,29 +25,94 @@ import {
 import item from './items';
 import objects from './objects';
 
+import Api from '../../api/Api';
+
 // create a component
 export default ({ navigation }) => {
+    const BASE_API = 'https://api.programlife.com.br/taligado';
 
+    // const base_img_uri = `https://api.programlife.com.br/taligado/public/assets/uploads`;
 
     const [search, setSearch] = useState('');
-    const [list, setList] = useState(item);
+    const [customersList, setCustomersList] = useState('');
+    const [customersSeachList, setCustomersSeachList] = useState(customersList);
 
     useEffect(() => {
 
+        const getCustomers = async () => {
+
+            //   const customers = await AsyncStorage.getItem('customers');
+            const customers = null;
+            // setCustomersList(customers);
+            // console.log(customers);
+            // setCustomersList(customers);
+
+            if (!customers) {
+                let req = await Api.getCustomers();
+
+
+                if (req) {
+                    // await AsyncStorage.setItem('customers', req); 
+                    setCustomersList(req);
+
+
+                } else {
+                    Alert('Falha ao carregar lista de clientes!');
+                }
+            } else {
+                setCustomersList(customers);
+            }
+        }
+
+        getCustomers();
+
         if (search === '') {
-            setList(item);
+            setCustomersSeachList(customersList);
         } else {
-            setList(
-                item.filter(
-                    (i) => i.title.toLowerCase().indexOf(search.toLowerCase()) > -1
+            setCustomersSeachList(
+                customersList.filter(
+                    (i) => i.customer_lastname.toLowerCase().indexOf(search.toLowerCase()) > -1
                 )
             );
         }
     }, [search])
 
+    useEffect(() => {
+
+        const getCustomers = async () => {
+
+            //   const customers = await AsyncStorage.getItem('customers');
+            const customers = null;
+            // setCustomersList(customers);
+            // console.log(customers);
+            // setCustomersList(customers);
+
+            if (!customers) {
+                let req = await Api.getCustomers();
+
+
+                if (req) {
+                    // await AsyncStorage.setItem('customers', req); 
+                    setCustomersList(req);
+                    setCustomersSeachList(req);
+
+
+                } else {
+                    Alert('Falha ao carregar lista de clientes!');
+                }
+            } else {
+                setCustomersList(customers);
+            }
+        }
+
+        getCustomers();
+
+    }, [])
+
     const width = Dimensions.get('window').width;
 
     const renderItemC = ({ item }) => (
+
         <View
             style={{
                 flex: 1,
@@ -66,19 +132,20 @@ export default ({ navigation }) => {
         </View>
     );
     const renderItem = ({ item }) => (
+
         <View style={{ flex: 1, marginBottom: 10, height: 100, flexDirection: "row", backgroundColor: '#fff', borderRadius: 10 }}>
             <View style={{ flex: 1 }}>
                 <Image
                     style={styles.imgListStyle}
                     source={{
-                        uri: item.avatar,
+                        uri: `${BASE_API}/public/assets/uploads/customers/${item.idCustomer}/${item.customer_image}`,
                     }}
                 />
             </View>
             <View style={{ flex: 3, marginStart: 10, marginTop: 10 }}>
-                <Text>{item.title}</Text>
-                <Text>{item.subtitle}</Text>
-                <Text>{item.subtitle}</Text>
+                <Text>{item.customer_name}</Text>
+                <Text>{item.customer_telephone}</Text>
+                <Text>{item.customer_address}</Text>
             </View>
 
         </View>
@@ -89,23 +156,7 @@ export default ({ navigation }) => {
         <Container>
 
             <View style={{ flex: 1, marginTop: 20, }}>
-                <Carousel
 
-                    loop
-                    width={width}
-                    height={width / 3}
-                    autoPlay={true}
-                    data={objects}
-                    scrollAnimationDuration={3000}
-                    mode="parallax"
-                    modeConfig={{
-                        parallaxScrollingScale: 0.9,
-                        parallaxScrollingOffset: 50,
-                    }}
-
-                    // onSnapToItem={objects => objects.id}
-                    renderItem={renderItemC}
-                />
 
                 <SearchBar
                     inputContainerStyle={{ backgroundColor: 'white' }}
@@ -125,15 +176,38 @@ export default ({ navigation }) => {
                     placeholder="Pesquisar"
                     value={search}
                 />
+                <Carousel
+
+                    loop
+                    width={width}
+                    height={width / 3}
+                    autoPlay={true}
+                    data={objects}
+                    scrollAnimationDuration={3000}
+                    mode="parallax"
+                    modeConfig={{
+                        parallaxScrollingScale: 0.9,
+                        parallaxScrollingOffset: 50,
+                    }}
+
+                    // onSnapToItem={objects => objects.id}
+                    renderItem={renderItemC}
+                />
 
                 <View style={{ flex: 1, marginTop: 5, paddingStart: 10, paddingEnd: 10, }}>
 
-                    <FlatList
-                        style={{ marginTop: 10 }}
-                        data={list}
-                        renderItem={renderItem}
-                        keyExtractor={item => item.id}
-                    />
+                    {customersList != '' ?
+
+                        < FlatList
+                            style={{ marginTop: 10 }}
+                            data={customersSeachList}
+                            renderItem={renderItem}
+                            keyExtractor={item => item.idCustomer}
+                        />
+                        : null
+                    }
+
+
 
                 </View>
             </View>

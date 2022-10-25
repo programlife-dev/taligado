@@ -9,8 +9,7 @@ import Profile from "./Profile";
 export {
     Preload,
     SignIn,
-    SignUp,
-    
+    SignUp,    
     Home,
     Profile 
 }

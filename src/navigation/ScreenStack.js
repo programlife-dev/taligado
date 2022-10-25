@@ -20,9 +20,9 @@ export default () => (
         screenOptions={{ headerShown: false }}
     >
         <Stack.Screen name="Preload" component={Preload} />
-        <Stack.Screen name="SignIn" component={SignIn} />
+        {/* <Stack.Screen name="SignIn" component={SignIn} />
         <Stack.Screen name="SignUp" component={SignUp} />
-        <Stack.Screen name="Home" component={HomeDrawerNavigation} />
+        <Stack.Screen name="Home" component={Home} /> */}
     </Stack.Navigator>
 )
 

@@ -1,7 +1,7 @@
 
 let items = [];
 
-for (var i = 1; i < 500001; i++) {   
+for (var i = 1; i < 2; i++) {   
     let item = {
         id: i,
         avatar: `https://source.unsplash.com/random/150x150?img=${i}`,

@@ -7,6 +7,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import {
     Home,
+    SignIn,
+    Preload,
     Profile
 } from '../screens';
 
@@ -96,7 +98,7 @@ SplashScreen.preventAutoHideAsync();
 // };
 
 
-export function HomeDrawerNavigation() {
+export default function HomeDrawerNavigation() {
    
     let [fontsLoaded] = useFonts({
         Roboto_100Thin,
