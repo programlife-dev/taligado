@@ -1,113 +1,59 @@
 //import liraries
 import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Dimensions, View, Text, StyleSheet, TextInput, Image, FlatList, Alert } from 'react-native';
-import { ListItem, SearchBar } from 'react-native-elements';
-import { WebView } from 'react-native-webview';
-
+import { Dimensions, View, Text, StyleSheet, Image, FlatList, Alert } from 'react-native';
+import { SearchBar } from 'react-native-elements';
 import Carousel from 'react-native-reanimated-carousel';
-import Animated, {
-    Extrapolate,
-    interpolate,
-    useAnimatedStyle,
-    useSharedValue,
-} from 'react-native-reanimated';
-
-import Feather from 'react-native-vector-icons/Feather';
-import {
-    Container,
-    SearchArea
-
-} from './styles';
-
-
-
-import item from './items';
+import { Container } from './styles';
 import objects from './objects';
+import Api, { BASE_API } from '../../api/Api';
 
-import Api from '../../api/Api';
-
-// create a component
 export default ({ navigation }) => {
-    const BASE_API = 'https://api.programlife.com.br/taligado';
-
-    // const base_img_uri = `https://api.programlife.com.br/taligado/public/assets/uploads`;
-
+    
     const [search, setSearch] = useState('');
     const [customersList, setCustomersList] = useState('');
-    const [customersSeachList, setCustomersSeachList] = useState(customersList);
+    const [customersSearchList, setCustomersSearchList] = useState(customersList);
+
+    useEffect(() => {
+        const getCustomers = async () => {
+            let req = await Api.getCustomers()
+
+            if (!req) {
+                const jsonReq = JSON.stringify(req)
+                await AsyncStorage.setItem('customers', jsonReq);
+                setCustomersList(req)
+                setCustomersSearchList(req)
+            } else {
+                const customersStorage = await AsyncStorage.getItem('customers')
+                const customers = (customersStorage && customersStorage != '' ? JSON.parse(customersStorage) : null)
+
+                if (customers) {
+                    setCustomersList(customers);
+                    setCustomersSearchList(customers);
+                } else {
+                    alert('Falha ao carregar lista de lojas e contatos!');
+                }
+            }
+        }
+        getCustomers();
+    }, [])
 
     useEffect(() => {
 
-        const getCustomers = async () => {
-
-            //   const customers = await AsyncStorage.getItem('customers');
-            const customers = null;
-            // setCustomersList(customers);
-            // console.log(customers);
-            // setCustomersList(customers);
-
-            if (!customers) {
-                let req = await Api.getCustomers();
-
-
-                if (req) {
-                    // await AsyncStorage.setItem('customers', req); 
-                    setCustomersList(req);
-
-
-                } else {
-                    Alert('Falha ao carregar lista de clientes!');
-                }
-            } else {
-                setCustomersList(customers);
-            }
-        }
-
-        getCustomers();
-
         if (search === '') {
-            setCustomersSeachList(customersList);
+            setCustomersSearchList(customersList);
         } else {
-            setCustomersSeachList(
+            setCustomersSearchList(
                 customersList.filter(
-                    (i) => i.customer_lastname.toLowerCase().indexOf(search.toLowerCase()) > -1
+                    (i) =>
+                        i.customer_lastname.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
+                        i.customer_telephone.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
+                        i.customer_address.toLowerCase().indexOf(search.toLowerCase()) > -1
                 )
             );
         }
+
     }, [search])
-
-    useEffect(() => {
-
-        const getCustomers = async () => {
-
-            //   const customers = await AsyncStorage.getItem('customers');
-            const customers = null;
-            // setCustomersList(customers);
-            // console.log(customers);
-            // setCustomersList(customers);
-
-            if (!customers) {
-                let req = await Api.getCustomers();
-
-
-                if (req) {
-                    // await AsyncStorage.setItem('customers', req); 
-                    setCustomersList(req);
-                    setCustomersSeachList(req);
-
-
-                } else {
-                    Alert('Falha ao carregar lista de clientes!');
-                }
-            } else {
-                setCustomersList(customers);
-            }
-        }
-
-        getCustomers();
-
-    }, [])
 
     const width = Dimensions.get('window').width;
 
@@ -200,7 +146,7 @@ export default ({ navigation }) => {
 
                         < FlatList
                             style={{ marginTop: 10 }}
-                            data={customersSeachList}
+                            data={customersSearchList}
                             renderItem={renderItem}
                             keyExtractor={item => item.idCustomer}
                         />

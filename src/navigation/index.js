@@ -5,11 +5,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import UserContextProvider from '../contexts/UserContext';
 
 import DrawerStack from './DrawerStack';
-import ScreenStack from './ScreenStack';
 
-// import {HomeDrawerNavigation} from './DrawerStack';
-
-// import AppStack from './AppStack';
+import AppStack from './AppStack';
 
 
 export default props => (

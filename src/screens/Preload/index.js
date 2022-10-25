@@ -1,6 +1,5 @@
 
 import React, { useEffect } from 'react';
-import { Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 
@@ -12,7 +11,7 @@ import LoginSVG from '../../assets/images/misc/login.svg';
 
 export default () => {
 
-    // console.log('Preload init');
+    console.log('Preload init');
 
     const navigation = useNavigation();
 
