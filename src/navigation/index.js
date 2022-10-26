@@ -4,9 +4,10 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import UserContextProvider from '../contexts/UserContext';
 
-import DrawerStack from './DrawerStack';
+// import DrawerStack from './DrawerStack';
 
 import AppStack from './AppStack';
+import AuthStack from './AuthStack';
 
 
 export default props => (
@@ -18,7 +19,7 @@ export default props => (
         barStyle="light-content"
         showHideTransition="slide"
       />
-      <DrawerStack />
+      <AppStack />
     </NavigationContainer>
   </UserContextProvider>
 );
