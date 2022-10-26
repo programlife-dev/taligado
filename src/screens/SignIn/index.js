@@ -67,11 +67,16 @@ export default () => {
                     routes: [{ name: 'Home' }]
                 });
             } else {
-                alert('E-mail e/ou senha errados!');
+                Alert.alert('', 'E-mail e/ou senha errados!', [
+                    { text: 'Ok', onPress: () => console.log('alert closed') },                      
+                ]);
+               
             }
 
         } else {
-            alert("Por favor, preencha todos os campos!");
+            Alert.alert('', 'Por favor, preencha todos os campos!', [
+                { text: 'Ok', onPress: () => console.log('alert closed') },                      
+            ]);           
         }
     }
     const handleSignUpClick = () => {

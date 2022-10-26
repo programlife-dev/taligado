@@ -8,8 +8,10 @@ import { Container } from './styles';
 import objects from './objects';
 import Api, { BASE_API } from '../../api/Api';
 
+
+
 export default ({ navigation }) => {
-    
+
     const [search, setSearch] = useState('');
     const [customersList, setCustomersList] = useState('');
     const [customersSearchList, setCustomersSearchList] = useState(customersList);
@@ -18,7 +20,7 @@ export default ({ navigation }) => {
         const getCustomers = async () => {
             let req = await Api.getCustomers()
 
-            if (!req) {
+            if (req) {
                 const jsonReq = JSON.stringify(req)
                 await AsyncStorage.setItem('customers', jsonReq);
                 setCustomersList(req)
@@ -31,7 +33,9 @@ export default ({ navigation }) => {
                     setCustomersList(customers);
                     setCustomersSearchList(customers);
                 } else {
-                    alert('Falha ao carregar lista de lojas e contatos!');
+                    Alert.alert('OOPS!', 'Falha ao carregar lista de lojas e contatos!', [
+                        { text: 'Entendido', onPress: () => console.log('alert closed') },
+                    ]);
                 }
             }
         }
