@@ -1,11 +1,12 @@
 //import liraries
 import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Dimensions, View, Text, StyleSheet, Image, FlatList, Alert } from 'react-native';
+import { Dimensions, View, Text, StyleSheet, Image, FlatList, Alert, TouchableOpacity } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import Carousel from 'react-native-reanimated-carousel';
 import { Container } from './styles';
 import objects from './objects';
+import { SeparatorItem } from '../../components/SeparatorItem';
 import Api, { BASE_API } from '../../api/Api';
 
 
@@ -18,28 +19,42 @@ export default ({ navigation }) => {
 
     useEffect(() => {
         const getCustomers = async () => {
-            let req = await Api.getCustomers()
 
-            if (req) {
-                const jsonReq = JSON.stringify(req)
-                await AsyncStorage.setItem('customers', jsonReq);
-                setCustomersList(req)
-                setCustomersSearchList(req)
+            const customersStorage = await AsyncStorage.getItem('customers');
+            const customers = (customersStorage && customersStorage != '' ? JSON.parse(customersStorage) : null);
+
+            if (customers) {
+                setCustomersList(customers);
+                setCustomersSearchList(customers);
+
+                let req = await Api.getCustomers();
+
+                if (req.success === true) {
+                    const jsonReq = JSON.stringify(req.data)
+                    await AsyncStorage.setItem('customers', jsonReq);
+                    setCustomersList(req.data)
+                    setCustomersSearchList(req.data)
+                }
+
             } else {
-                const customersStorage = await AsyncStorage.getItem('customers')
-                const customers = (customersStorage && customersStorage != '' ? JSON.parse(customersStorage) : null)
 
-                if (customers) {
-                    setCustomersList(customers);
-                    setCustomersSearchList(customers);
+                let req = await Api.getCustomers();
+
+                if (req.success === true) {
+                    const jsonReq = JSON.stringify(req.data)
+                    await AsyncStorage.setItem('customers', jsonReq);
+                    setCustomersList(req.data)
+                    setCustomersSearchList(req.data)
                 } else {
-                    Alert.alert('OOPS!', 'Falha ao carregar lista de lojas e contatos!', [
+                    Alert.alert('Ops, falha ao carregar lista.', 'Por favor, verifique sua conexão com a internet!', [
                         { text: 'Entendido', onPress: () => console.log('alert closed') },
                     ]);
                 }
             }
         }
+
         getCustomers();
+
     }, [])
 
     useEffect(() => {
@@ -47,21 +62,38 @@ export default ({ navigation }) => {
         if (search === '') {
             setCustomersSearchList(customersList);
         } else {
-            setCustomersSearchList(
-                customersList.filter(
-                    (i) =>
-                        i.customer_lastname.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
-                        i.customer_telephone.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
-                        i.customer_address.toLowerCase().indexOf(search.toLowerCase()) > -1
-                )
-            );
+            if (customersList !== '') {
+                setCustomersSearchList(
+                    customersList.filter(
+                        (i) =>
+                            i.customer_lastname.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
+                            i.customer_telephone.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
+                            i.customer_address.toLowerCase().indexOf(search.toLowerCase()) > -1
+                    )
+                );
+            } else {
+                Alert.alert('Ops, falha ao carregar lista.', 'Por favor, verifique sua conexão com a internet!', [
+                    { text: 'Entendido', onPress: () => console.log('alert closed') },
+                ]);
+            }
+
         }
 
     }, [search])
 
+
+    const getCustomer = async (data) => {
+        let req = await Api.getCustomer(data.idCustomer)
+        // console.log(req);
+        Alert.alert(`${data.customer_lastname}`, '', [
+            { text: 'Ok', onPress: () => console.log('alert closed') },
+        ]);
+    }
+
     const width = Dimensions.get('window').width;
 
     const renderItemC = ({ item }) => (
+
 
         <View
             style={{
@@ -71,10 +103,12 @@ export default ({ navigation }) => {
                 backgroundColor: '#fff',
                 borderRadius: 15,
                 borderColor: 'rgba(158, 150, 150, .1)',
+                padding: 10,
+                resizeMode: 'cover',
             }}
         >
             <Image
-                style={styles.imgStyle}
+                style={ styles.imgStyle}
                 source={{
                     uri: item.avatar,
                 }}
@@ -83,22 +117,26 @@ export default ({ navigation }) => {
     );
     const renderItem = ({ item }) => (
 
-        <View style={{ flex: 1, marginBottom: 10, height: 100, flexDirection: "row", backgroundColor: '#fff', borderRadius: 10 }}>
-            <View style={{ flex: 1 }}>
+
+
+        <TouchableOpacity onPress={() => getCustomer(item)} style={{ flex: 1, marginBottom: 10, height: (item.customer_nivel === '5' ? 100 : 80), flexDirection: "row", backgroundColor: (item.customer_nivel === '5' ? '#f4fe96' : '#fff'), borderRadius: 10 }}>
+            <View style={{ flex: 1, padding: 10 }}>
                 <Image
+
                     style={styles.imgListStyle}
                     source={{
-                        uri: `${BASE_API}/public/assets/uploads/customers/${item.idCustomer}/${item.customer_image}`,
+                        uri: (item.customer_image !== null ? `${BASE_API}/public/assets/uploads/customers/${item.idCustomer}/${item.customer_image}` : `${BASE_API}/public/assets/images/noPhoto.png`),
                     }}
                 />
             </View>
             <View style={{ flex: 3, marginStart: 10, marginTop: 10 }}>
-                <Text>{item.customer_name}</Text>
+                <Text style={{ fontWeight: 'bold' }}>{item.customer_name}</Text>
                 <Text>{item.customer_telephone}</Text>
-                <Text>{item.customer_address}</Text>
+                {item.customer_nivel === '5' ? <Text>{item.customer_address}</Text> : null}
+
             </View>
 
-        </View>
+        </TouchableOpacity>
 
     );
 
@@ -123,7 +161,7 @@ export default ({ navigation }) => {
                     searchIcon={{ size: 24 }}
                     onChangeText={t => setSearch(t)}
                     onClear={(text) => { }}
-                    placeholder="Pesquisar"
+                    placeholder="O que você precisa?"
                     value={search}
                 />
                 <Carousel
@@ -133,7 +171,7 @@ export default ({ navigation }) => {
                     height={width / 3}
                     autoPlay={true}
                     data={objects}
-                    scrollAnimationDuration={3000}
+                    scrollAnimationDuration={10000}
                     mode="parallax"
                     modeConfig={{
                         parallaxScrollingScale: 0.9,
@@ -149,6 +187,7 @@ export default ({ navigation }) => {
                     {customersList != '' ?
 
                         < FlatList
+                            ItemSeparatorComponent={SeparatorItem}
                             style={{ marginTop: 10 }}
                             data={customersSearchList}
                             renderItem={renderItem}
@@ -175,18 +214,21 @@ const styles = StyleSheet.create({
     imgStyle: {
         flex: 1,
         width: '100%',
-        height: 34,
+        height: '100%',
         backgroundColor: 'white',
-        borderRadius: 10,
+        borderRadius: 10,             
+
 
     },
     imgListStyle: {
         flex: 1,
         width: '100%',
-        height: 34,
+        height: 24,
         backgroundColor: 'white',
         borderTopLeftRadius: 10,
         borderBottomLeftRadius: 10,
+        padding: 10,
+        alignSelf: 'flex-start',
 
     }
 

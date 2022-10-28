@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import {
     Home,
-    Profile
+    CustomerProfile
 } from '../screens';
 
 const Stack = createNativeStackNavigator();
@@ -14,7 +14,7 @@ export default () => (
     >
 
         <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen name="Customer Profile" component={CustomerProfile} />
     </Stack.Navigator>
 )
 

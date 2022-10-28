@@ -2,7 +2,8 @@ import Preload from "./Preload";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import Home from "./Home";
-import Profile from "./Profile";
+import UserProfile from "./UserProfile";
+import CustomerProfile from "./CustomerProfile";
 
 
 
@@ -11,5 +12,6 @@ export {
     SignIn,
     SignUp,    
     Home,
-    Profile 
+    UserProfile,
+    CustomerProfile
 }
