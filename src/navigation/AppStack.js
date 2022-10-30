@@ -13,8 +13,10 @@ export default () => (
         screenOptions={{ headerShown: false }}
     >
 
+        
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Customer Profile" component={CustomerProfile} />
+
     </Stack.Navigator>
 )
 

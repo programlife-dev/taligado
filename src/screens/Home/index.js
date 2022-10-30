@@ -137,7 +137,7 @@ export default ({ navigation }) => {
 
 
 
-        <TouchableOpacity onPress={() => getCustomer(item)} style={{ flex: 1, marginBottom: 10, height: (item.customer_nivel === '5' ? 100 : 80), flexDirection: "row", backgroundColor: (item.customer_nivel === '5' ? '#f4fe96' : '#fff'), borderRadius: 10 }}>
+        <TouchableOpacity onPress={() => navigation.navigate('Customer Profile', { customer: item })} style={{ flex: 1, marginBottom: 10, height: (item.customer_nivel === '5' ? 100 : 80), flexDirection: "row", backgroundColor: (item.customer_nivel === '5' ? '#f4fe96' : '#fff'), borderRadius: 10 }}>
             <View style={{ flex: 1, padding: 10 }}>
                 <Image
 
@@ -189,7 +189,7 @@ export default ({ navigation }) => {
                     height={width / 3}
                     autoPlay={true}
                     data={objects}
-                    scrollAnimationDuration={10000}
+                    scrollAnimationDuration={5000}
                     mode="parallax"
                     modeConfig={{
                         parallaxScrollingScale: 0.9,
