@@ -10,12 +10,30 @@ import { SeparatorItem } from '../../components/SeparatorItem';
 import Api, { BASE_API } from '../../api/Api';
 
 
+export const useDebounce = (value, delay) => {
+    const [debouncedValue, setDebounceValue] = useState(value);
+
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            setDebounceValue(value);
+        }, delay);
+
+        return () => clearTimeout(timeoutId);
+    }, [value])
+ 
+    return debouncedValue;
+}
 
 export default ({ navigation }) => {
 
     const [search, setSearch] = useState('');
     const [customersList, setCustomersList] = useState('');
-    const [customersSearchList, setCustomersSearchList] = useState(customersList);
+    const [customersSearchList, setCustomersSearchList] = useState(customersList);    
+    const debouncedValue = useDebounce(search, 1000);
+
+
+
+
 
     useEffect(() => {
         const getCustomers = async () => {
@@ -58,6 +76,7 @@ export default ({ navigation }) => {
     }, [])
 
     useEffect(() => {
+        // console.log('Executando...');
 
         if (search === '') {
             setCustomersSearchList(customersList);
@@ -79,7 +98,7 @@ export default ({ navigation }) => {
 
         }
 
-    }, [search])
+    }, [debouncedValue])
 
 
     const getCustomer = async (data) => {
@@ -93,8 +112,6 @@ export default ({ navigation }) => {
     const width = Dimensions.get('window').width;
 
     const renderItemC = ({ item }) => (
-
-
         <View
             style={{
                 flex: 1,
@@ -108,13 +125,14 @@ export default ({ navigation }) => {
             }}
         >
             <Image
-                style={ styles.imgStyle}
+                style={styles.imgStyle}
                 source={{
                     uri: item.avatar,
                 }}
             />
         </View>
     );
+
     const renderItem = ({ item }) => (
 
 
@@ -216,7 +234,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         backgroundColor: 'white',
-        borderRadius: 10,             
+        borderRadius: 10,
 
 
     },
